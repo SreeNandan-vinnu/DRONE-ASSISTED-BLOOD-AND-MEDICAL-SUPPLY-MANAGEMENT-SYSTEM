@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Medical Drone System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <i class="fas fa-heartbeat"></i>
+                <h1>Medical Drone System</h1>
+                <p class="role-display">Role: <span id="roleDisplay">Loading...</span></p>
+            </div>
+            
+            <div id="loginFormContainer">
+                <form id="loginForm" onsubmit="return handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginUsername"><i class="fas fa-user"></i> Username</label>
+                        <input type="text" id="loginUsername" required placeholder="Enter your username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                    
+                    <div class="form-footer">
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                        <p class="toggle-form">Don't have an account? <a href="#" onclick="showSignUp(); return false;">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="signUpFormContainer" style="display: none;">
+                <form id="signUpForm" onsubmit="return handleSignUp(event)">
+                    <div class="form-group">
+                        <label for="signUpName"><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" id="signUpName" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signUpEmail"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="signUpEmail" required placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signUpUsername"><i class="fas fa-user-circle"></i> Username</label>
+                        <input type="text" id="signUpUsername" required placeholder="Choose a username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signUpPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="signUpPassword" required placeholder="Create a password" minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword"><i class="fas fa-lock"></i> Confirm Password</label>
+                        <input type="password" id="confirmPassword" required placeholder="Confirm your password" minlength="6">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                    
+                    <div class="form-footer">
+                        <p class="toggle-form">Already have an account? <a href="#" onclick="showLogin(); return false;">Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i> Back to Role Selection
+        </button>
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>

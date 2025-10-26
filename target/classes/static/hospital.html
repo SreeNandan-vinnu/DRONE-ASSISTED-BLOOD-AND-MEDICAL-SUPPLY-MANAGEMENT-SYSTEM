@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-heartbeat"></i>
+                <h3>MedDrone</h3>
+            </div>
+            <ul class="nav-menu">
+                <li class="active"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-box"></i> My Orders</a></li>
+                <li><a href="#"><i class="fas fa-map"></i> Live Tracking</a></li>
+                <li><a href="#"><i class="fas fa-bell"></i> Notifications <span class="badge">3</span></a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <div class="main-content">
+            <header class="dashboard-header">
+                <h1>Hospital Dashboard</h1>
+                <div class="header-right">
+                    <span class="welcome-text">Welcome, <strong id="userName">Dr. Sarah Johnson</strong></span>
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="action-cards">
+                <div class="action-card" onclick="openPlaceOrderModal()">
+                    <div class="card-icon blue">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h3>Place Order</h3>
+                    <p>Request medical supplies</p>
+                </div>
+                
+                <div class="action-card" onclick="openTrackOrdersModal()">
+                    <div class="card-icon green">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>Track Orders</h3>
+                    <p>Monitor delivery status</p>
+                </div>
+                
+                <div class="action-card" onclick="openLiveMapModal()">
+                    <div class="card-icon orange">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Live Map</h3>
+                    <p>Real-time tracking</p>
+                </div>
+                
+                <div class="action-card" onclick="openDeliveryConfirmationModal('#ORD-2401')">
+                    <div class="card-icon purple">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Delivery Confirmation</h3>
+                    <p>Confirm receipt</p>
+                </div>
+            </div>
+            
+            <div class="recent-orders-section">
+                <h2>Recent Orders</h2>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th>ETA</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-2401</td>
+                            <td>Blood (O+)</td>
+                            <td>4 Units</td>
+                            <td><span class="badge-status preparing">Preparing</span></td>
+                            <td>12 mins</td>
+                            <td><button class="btn-action" onclick="viewOrderDetails('ORD-2401')">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2398</td>
+                            <td>Insulin</td>
+                            <td>10 Vials</td>
+                            <td><span class="badge-status in-flight">In-Flight</span></td>
+                            <td>5 mins</td>
+                            <td><button class="btn-action" onclick="trackOnMap('ORD-2398')">Track</button></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2395</td>
+                            <td>Blood (AB-)</td>
+                            <td>2 Units</td>
+                            <td><span class="badge-status delivered">Delivered</span></td>
+                            <td>-</td>
+                            <td><button class="btn-action-secondary">Receipt</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Place Order Modal -->
+    <div id="placeOrderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Place New Order</h2>
+                <span class="close" onclick="closePlaceOrderModal()">&times;</span>
+            </div>
+            <form id="orderForm" onsubmit="return submitOrder(event)">
+                <div class="form-group">
+                    <label for="itemType">Item Type *</label>
+                    <select id="itemType" required onchange="updateBloodGroupVisibility()">
+                        <option value="">Select Item Type</option>
+                        <option value="blood">Blood</option>
+                        <option value="medicine">Medicine</option>
+                        <option value="vaccine">Vaccine</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="bloodGroupSection" style="display:none;">
+                    <label for="bloodGroup">Blood Group *</label>
+                    <select id="bloodGroup">
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="quantity">Quantity *</label>
+                    <input type="number" id="quantity" min="1" max="100" required placeholder="Enter quantity">
+                </div>
+                
+                <div class="form-group">
+                    <label>Urgency Level *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="urgency" value="high" required>
+                            <span class="urgency-high">High Priority</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="urgency" value="medium">
+                            <span class="urgency-medium">Medium Priority</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="urgency" value="low">
+                            <span class="urgency-low">Low Priority</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="temperature">Temperature Range (°C): <span id="tempValue">5</span>°C</label>
+                    <input type="range" id="temperature" min="2" max="8" value="5" step="0.5" oninput="updateTempValue(this.value)">
+                    <div class="temp-labels">
+                        <span>2°C</span>
+                        <span>8°C</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-paper-plane"></i> Submit Order
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Track Orders Modal -->
+    <div id="trackOrdersModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Track Orders</h2>
+                <span class="close" onclick="closeTrackOrdersModal()">&times;</span>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search orders..." onkeyup="filterOrders(this.value)">
+                <i class="fas fa-search"></i>
+            </div>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>ETA</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="trackOrdersTableBody">
+                    <tr data-order-id="#ORD-2401" data-status="Preparing">
+                        <td>#ORD-2401</td>
+                        <td>Blood (O+)</td>
+                        <td><span class="badge-status preparing">Preparing</span></td>
+                        <td>12 mins</td>
+                        <td class="actions">
+                            <button class="btn-action" onclick="trackOnMap('#ORD-2401')">Track</button>
+                            <button class="btn-action-secondary" onclick="cancelOrder('#ORD-2401')">Cancel</button>
+                        </td>
+                    </tr>
+                    <tr data-order-id="#ORD-2398" data-status="In-Flight">
+                        <td>#ORD-2398</td>
+                        <td>Insulin</td>
+                        <td><span class="badge-status in-flight">In-Flight</span></td>
+                        <td>5 mins</td>
+                        <td class="actions">
+                            <button class="btn-action" onclick="trackOnMap('#ORD-2398')">Track</button>
+                            <button class="btn-action-secondary" onclick="cancelOrder('#ORD-2398')">Cancel</button>
+                        </td>
+                    </tr>
+                    <tr data-order-id="#ORD-2395" data-status="Delivered">
+                        <td>#ORD-2395</td>
+                        <td>Blood (AB-)</td>
+                        <td><span class="badge-status delivered">Delivered</span></td>
+                        <td>-</td>
+                        <td class="actions">
+                            <button class="btn-action-secondary" onclick="viewReceipt('#ORD-2395')">Receipt</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Live Map Modal -->
+    <div id="liveMapModal" class="modal">
+        <div class="modal-content modal-fullscreen">
+            <div class="modal-header">
+                <h2>Live Tracking Map</h2>
+                <span class="close" onclick="closeLiveMapModal()">&times;</span>
+            </div>
+            <div class="map-container">
+                <div class="map-display">
+                    <div class="map-marker distribution-center" style="top: 20%; left: 30%;">
+                        <i class="fas fa-warehouse"></i>
+                        <span class="marker-label">Distribution Center</span>
+                    </div>
+                    <div class="map-marker hospital" style="top: 70%; left: 80%;">
+                        <i class="fas fa-hospital"></i>
+                        <span class="marker-label">Your Hospital</span>
+                    </div>
+                    <div class="drone-marker" id="droneMarker" style="top: 20%; left: 30%;">
+                        <i class="fas fa-helicopter"></i>
+                    </div>
+                    <svg class="route-line" width="100%" height="100%">
+                        <line x1="30%" y1="20%" x2="80%" y2="70%" stroke="#2196F3" stroke-width="2" stroke-dasharray="5,5"/>
+                    </svg>
+                </div>
+                <div class="telemetry-sidebar">
+                    <h3>Telemetry Data</h3>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Drone ID:</span>
+                        <span class="telemetry-value">DRONE-047</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Speed:</span>
+                        <span class="telemetry-value" id="droneSpeed">45 km/h</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Battery:</span>
+                        <span class="telemetry-value">
+                            <div class="battery-indicator">
+                                <div class="battery-level" id="batteryLevel" style="width: 78%"></div>
+                            </div>
+                            <span id="batteryPercent">78%</span>
+                        </span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">ETA:</span>
+                        <span class="telemetry-value eta-countdown" id="etaCountdown">00:05:23</span>
+                    </div>
+                    <button class="btn-primary" onclick="refreshTelemetry()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delivery Confirmation Modal -->
+    <div id="deliveryConfirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Delivery Confirmation</h2>
+                <span class="close" onclick="closeDeliveryConfirmationModal()">&times;</span>
+            </div>
+            <div class="confirmation-content">
+                <div class="qr-scanner">
+                    <div class="scanner-box">
+                        <i class="fas fa-qrcode"></i>
+                        <p>Scan Package QR Code</p>
+                        <button class="btn-primary" type="button" onclick="simulateScan()">
+                            <i class="fas fa-camera"></i> Open Scanner
+                        </button>
+                    </div>
+                </div>
+                <div class="divider">OR</div>
+                <form onsubmit="return confirmDelivery(event)">
+                    <div class="form-group">
+                        <label for="otpInput">Enter 6-Digit OTP</label>
+                        <input type="text" id="otpInput" maxlength="6" pattern="[0-9]{6}" required placeholder="Enter OTP">
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-check"></i> Confirm Delivery
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="main.js"></script>
+    <script src="hospital.js"></script>
+</body>
+</html>

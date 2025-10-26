@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribution Center Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-warehouse"></i>
+                <h3>Distribution</h3>
+            </div>
+            <ul class="nav-menu">
+                <li class="active"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-clipboard-check"></i> Orders</a></li>
+                <li><a href="#"><i class="fas fa-boxes"></i> Inventory</a></li>
+                <li><a href="#"><i class="fas fa-bell"></i> Notifications <span class="badge">5</span></a></li>
+                <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <div class="main-content">
+            <header class="dashboard-header">
+                <h1>Distribution Center - Operator Panel</h1>
+                <div class="header-right">
+                    <span class="welcome-text">Welcome, <strong>Mike Rodriguez</strong></span>
+                </div>
+            </header>
+            
+            <div class="section-card">
+                <h2>Validate Orders</h2>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Hospital</th>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Urgency</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-2405</td>
+                            <td>City General Hospital</td>
+                            <td>Blood (A+)</td>
+                            <td>3 Units</td>
+                            <td><span class="urgency-high">High</span></td>
+                            <td>
+                                <button class="btn-approve" onclick="approveOrder('ORD-2405', this)">Approve</button>
+                                <button class="btn-reject" onclick="rejectOrder('ORD-2405', this)">Reject</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2406</td>
+                            <td>Memorial Medical</td>
+                            <td>Insulin</td>
+                            <td>15 Vials</td>
+                            <td><span class="urgency-medium">Medium</span></td>
+                            <td>
+                                <button class="btn-approve" onclick="approveOrder('ORD-2406', this)">Approve</button>
+                                <button class="btn-reject" onclick="rejectOrder('ORD-2406', this)">Reject</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>Inventory Status</h2>
+                    <button class="btn-primary" onclick="openAddStockModal()">
+                        <i class="fas fa-plus"></i> Add Stock
+                    </button>
+                </div>
+                <div class="inventory-grid">
+                    <div class="inventory-card status-good">
+                        <h3>A+</h3>
+                        <p class="inventory-qty">45 Units</p>
+                        <span class="status-indicator">Good Stock</span>
+                    </div>
+                    <div class="inventory-card status-warning">
+                        <h3>B+</h3>
+                        <p class="inventory-qty">18 Units</p>
+                        <span class="status-indicator">Low Stock</span>
+                    </div>
+                    <div class="inventory-card status-critical">
+                        <h3>AB+</h3>
+                        <p class="inventory-qty">8 Units</p>
+                        <span class="status-indicator">Critical</span>
+                    </div>
+                    <div class="inventory-card status-good">
+                        <h3>O+</h3>
+                        <p class="inventory-qty">52 Units</p>
+                        <span class="status-indicator">Good Stock</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card">
+                <h2>Prepare Payload</h2>
+                <div class="payload-workflow">
+                    <div class="workflow-form">
+                        <div class="form-group">
+                            <label>Package ID</label>
+                            <input type="text" value="PKG-2024-1016-001" readonly>
+                        </div>
+                        <div class="qr-display">
+                            <h4>Package QR Code</h4>
+                            <div class="qr-code-box">
+                                <i class="fas fa-qrcode"></i>
+                                <p>PKG-2024-1016-001</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checklist">
+                        <h4>Pre-Flight Checklist</h4>
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked onchange="checkAllCompleted()">
+                            <span>Item verification completed</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked onchange="checkAllCompleted()">
+                            <span>Temperature check passed</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" onchange="checkAllCompleted()">
+                            <span>QR code attached</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" onchange="checkAllCompleted()">
+                            <span>Weight verified</span>
+                        </label>
+                        <button class="btn-primary btn-large" id="dispatchBtn" onclick="readyForDispatch()" disabled>
+                            <i class="fas fa-rocket"></i> Ready for Dispatch
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Approval Modal -->
+    <div id="approvalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Order Approved</h2>
+                <span class="close" onclick="closeApprovalModal()">&times;</span>
+            </div>
+            <div class="approval-content">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h3>Order Successfully Approved</h3>
+                <p><strong>Order ID:</strong> <span id="approvedOrderId"></span></p>
+                <p><strong>Payload ID:</strong> <span id="payloadId"></span></p>
+                <button class="btn-primary" onclick="closeApprovalModal()">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Stock Modal -->
+    <div id="addStockModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Inventory Stock</h2>
+                <span class="close" onclick="closeAddStockModal()">&times;</span>
+            </div>
+            <form onsubmit="return addStock(event)">
+                <div class="form-group">
+                    <label>Item Type</label>
+                    <select required>
+                        <option value="">Select Type</option>
+                        <option value="blood">Blood</option>
+                        <option value="medicine">Medicine</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" min="1" required>
+                </div>
+                <button type="submit" class="btn-primary">Add to Inventory</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="main.js"></script>
+    <script src="distribution.js"></script>
+</body>
+</html>

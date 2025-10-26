@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Operations Control</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-drone"></i>
+                <h3>Drone Ops</h3>
+            </div>
+            <ul class="nav-menu">
+                <li class="active"><a href="#"><i class="fas fa-home"></i> Control Center</a></li>
+                <li><a href="#"><i class="fas fa-list"></i> Missions</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                <li><a href="#"><i class="fas fa-bell"></i> Alerts <span class="badge">2</span></a></li>
+                <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <div class="main-content">
+            <header class="dashboard-header">
+                <h1>Drone Operations Control</h1>
+                <div class="header-right">
+                    <span class="welcome-text">Operator: <strong>Alex Chen</strong></span>
+                </div>
+            </header>
+            
+            <div class="mission-list-section">
+                <h2>Active Missions</h2>
+                <div class="mission-cards">
+                    <div class="mission-card active">
+                        <div class="mission-header">
+                            <h3>DRONE-047</h3>
+                            <span class="status-badge in-flight">In Flight</span>
+                        </div>
+                        <div class="mission-details">
+                            <p><strong>Mission:</strong> Blood Delivery</p>
+                            <p><strong>Destination:</strong> City General Hospital</p>
+                            <p><strong>Battery:</strong> 78%</p>
+                            <p><strong>ETA:</strong> 5 mins</p>
+                        </div>
+                        <button class="btn-action" onclick="monitorDrone('DRONE-047')">Monitor</button>
+                    </div>
+                    
+                    <div class="mission-card standby">
+                        <div class="mission-header">
+                            <h3>DRONE-052</h3>
+                            <span class="status-badge standby">Standby</span>
+                        </div>
+                        <div class="mission-details">
+                            <p><strong>Status:</strong> Ready for dispatch</p>
+                            <p><strong>Battery:</strong> 100%</p>
+                            <p><strong>Location:</strong> Distribution Center</p>
+                            <p><strong>Next Mission:</strong> Pending</p>
+                        </div>
+                        <button class="btn-action" onclick="assignMission('DRONE-052')">Assign</button>
+                    </div>
+                    
+                    <div class="mission-card maintenance">
+                        <div class="mission-header">
+                            <h3>DRONE-039</h3>
+                            <span class="status-badge maintenance">Maintenance</span>
+                        </div>
+                        <div class="mission-details">
+                            <p><strong>Status:</strong> Routine check</p>
+                            <p><strong>Last Flight:</strong> 2 hours ago</p>
+                            <p><strong>Flights Today:</strong> 8</p>
+                            <p><strong>Available:</strong> 30 mins</p>
+                        </div>
+                        <button class="btn-action-secondary">View Log</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flight-monitor-section">
+                <h2>Flight Monitor</h2>
+                <div class="monitor-container">
+                    <div class="monitor-map">
+                        <div class="map-display">
+                            <div class="map-marker distribution-center" style="top: 20%; left: 30%;">
+                                <i class="fas fa-warehouse"></i>
+                                <span class="marker-label">Base</span>
+                            </div>
+                            <div class="map-marker hospital" style="top: 70%; left: 80%;">
+                                <i class="fas fa-hospital"></i>
+                                <span class="marker-label">Target</span>
+                            </div>
+                            <div class="drone-marker" style="top: 45%; left: 55%;">
+                                <i class="fas fa-helicopter"></i>
+                            </div>
+                            <svg class="route-line" width="100%" height="100%">
+                                <line x1="30%" y1="20%" x2="80%" y2="70%" stroke="#2196F3" stroke-width="2" stroke-dasharray="5,5"/>
+                            </svg>
+                        </div>
+                        <div class="control-panel">
+                            <button class="control-btn launch" onclick="launchDrone()">
+                                <i class="fas fa-play"></i> Launch
+                            </button>
+                            <button class="control-btn abort" onclick="abortMission()">
+                                <i class="fas fa-times"></i> Abort
+                            </button>
+                            <button class="control-btn return" onclick="returnHome()">
+                                <i class="fas fa-home"></i> Return Home
+                            </button>
+                        </div>
+                    </div>
+                    <div class="monitor-telemetry">
+                        <h3>Real-Time Telemetry</h3>
+                        <div class="telemetry-grid">
+                            <div class="telemetry-box">
+                                <span class="telemetry-label">Latitude</span>
+                                <span class="telemetry-value">12.9716° N</span>
+                            </div>
+                            <div class="telemetry-box">
+                                <span class="telemetry-label">Longitude</span>
+                                <span class="telemetry-value">80.2594° E</span>
+                            </div>
+                            <div class="telemetry-box">
+                                <span class="telemetry-label">Altitude</span>
+                                <span class="telemetry-value">120 m</span>
+                            </div>
+                            <div class="telemetry-box">
+                                <span class="telemetry-label">Speed</span>
+                                <span class="telemetry-value">45 km/h</span>
+                            </div>
+                            <div class="telemetry-box">
+                                <span class="telemetry-label">Battery</span>
+                                <span class="telemetry-value">78%</span>
+                            </div>
+                            <div class="telemetry-box">
+                                <span class="telemetry-label">Temperature</span>
+                                <span class="telemetry-value">4.5°C</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mission-log-section">
+                <h2>Mission Log</h2>
+                <div class="log-container">
+                    <div class="log-entry">
+                        <span class="log-time">10:45:23</span>
+                        <span class="log-message"><i class="fas fa-check-circle"></i> Payload secured successfully</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">10:45:18</span>
+                        <span class="log-message"><i class="fas fa-info-circle"></i> Pre-flight checks completed</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">10:44:55</span>
+                        <span class="log-message"><i class="fas fa-paper-plane"></i> Mission assigned: ORD-2398</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="main.js"></script>
+    <script src="drone.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Drone Supply System - Select Your Role</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="role-selection-container">
+        <div class="welcome-header">
+            <i class="fas fa-heartbeat pulse-icon"></i>
+            <h1>Medical Drone Supply System</h1>
+            <p>Select Your Role to Continue</p>
+        </div>
+        
+        <div class="role-cards-grid">
+            <div class="role-card" onclick="selectRole('hospital')">
+                <div class="role-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h2>Hospital Staff</h2>
+                <p>Place and track medical supply orders</p>
+                <button class="role-btn">Access Dashboard</button>
+            </div>
+            
+            <div class="role-card" onclick="selectRole('distribution')">
+                <div class="role-icon">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <h2>Distribution Center</h2>
+                <p>Manage inventory and validate orders</p>
+                <button class="role-btn">Access Dashboard</button>
+            </div>
+            
+            <div class="role-card" onclick="selectRole('drone')">
+                <div class="role-icon">
+                    <i class="fas fa-drone"></i>
+                </div>
+                <h2>Drone Operator</h2>
+                <p>Monitor and control flight operations</p>
+                <button class="role-btn">Access Dashboard</button>
+            </div>
+            
+            <div class="role-card" onclick="selectRole('admin')">
+                <div class="role-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <h2>System Administrator</h2>
+                <p>Manage system and user settings</p>
+                <button class="role-btn">Access Dashboard</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Administration</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="main-content">
+            
+            <div class="stats-cards">
+                <div class="stat-card blue">
+                    <div class="stat-icon"><i class="fas fa-plane"></i></div>
+                    <div class="stat-content">
+                        <h3>Active Missions</h3>
+                        <p class="stat-number">8</p>
+                    </div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-content">
+                        <h3>Total Deliveries</h3>
+                        <p class="stat-number">1,247</p>
+                    </div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="stat-content">
+                        <h3>Success Rate</h3>
+                        <p class="stat-number">98.5%</p>
+                    </div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-content">
+                        <h3>Active Users</h3>
+                        <p class="stat-number">142</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>User Management</h2>
+                    <button class="btn-primary" onclick="openAddUserModal()">
+                        <i class="fas fa-user-plus"></i> Add User
+                    </button>
+                </div>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#USR-001</td>
+                            <td>Dr. Sarah Johnson</td>
+                            <td>Hospital Staff</td>
+                            <td>sarah.j@hospital.com</td>
+                            <td><span class="badge-status active">Active</span></td>
+                            <td>
+                                <button class="btn-action" onclick="editUser('USR-001')">Edit</button>
+                                <button class="btn-action-secondary" onclick="deleteUser('USR-001')">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#USR-012</td>
+                            <td>Mike Rodriguez</td>
+                            <td>Distribution Center</td>
+                            <td>mike.r@distcenter.com</td>
+                            <td><span class="badge-status active">Active</span></td>
+                            <td>
+                                <button class="btn-action" onclick="editUser('USR-012')">Edit</button>
+                                <button class="btn-action-secondary" onclick="deleteUser('USR-012')">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="reports-section">
+                <h2>Reports & Analytics</h2>
+                <div class="chart-container">
+                    <div class="chart-placeholder">
+                        <h4>Weekly Delivery Statistics</h4>
+                        <p>📊 Chart showing delivery trends</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card">
+                <h2>System Logs</h2>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Event Type</th>
+                            <th>User</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-10-16 10:45:23</td>
+                            <td>Order Placed</td>
+                            <td>Dr. Sarah Johnson</td>
+                            <td>New order #ORD-2401 created</td>
+                            <td><span class="log-type info">Info</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-10-16 10:44:15</td>
+                            <td>Delivery Complete</td>
+                            <td>DRONE-047</td>
+                            <td>Order #ORD-2395 delivered</td>
+                            <td><span class="log-type success">Success</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New User</h2>
+                <span class="close" onclick="closeModal('addUserModal')">&times;</span>
+            </div>
+            <form onsubmit="return addUser(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" required placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select required>
+                        <option value="">Select Role</option>
+                        <option value="hospital">Hospital Staff</option>
+                        <option value="distribution">Distribution Center</option>
+                        <option value="drone">Drone Operator</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-user-plus"></i> Create User
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit User</h2>
+                <span class="close" onclick="closeModal('editUserModal')">&times;</span>
+            </div>
+            <form onsubmit="return updateUser(event)">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="editUserName" required placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editUserEmail" required placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="editUserRole" required>
+                        <option value="">Select Role</option>
+                        <option value="hospital">Hospital Staff</option>
+                        <option value="distribution">Distribution Center</option>
+                        <option value="drone">Drone Operator</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">
+        <i class="fas fa-moon"></i>
+    </button>
+    <script src="ui.js"></script>
+    <script>
+        const role = 'admin';
+        const username = 'Patricia Wilson';
+
+        const dashboardContainer = document.querySelector('.dashboard-container');
+        const mainContent = document.querySelector('.main-content');
+
+        const sidebar = createSidebar(role);
+        const header = createHeader(role, username);
+
+        dashboardContainer.insertBefore(sidebar, mainContent);
+        mainContent.insertBefore(header, mainContent.firstChild);
+    </script>
+    <script src="main.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
